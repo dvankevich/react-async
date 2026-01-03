@@ -11,11 +11,26 @@ export const App = () => {
     dispatch(fetchTasks());
   }, [dispatch]);
   // Рендерим розмітку в залежності від значень у стані
+
+  function formatDate(timestamp) {
+    const date = new Date(timestamp * 1000);
+    return date.toLocaleDateString();
+  }
+
   return (
     <div>
       {isLoading && <b>Loading tasks...</b>}
       {error && <b>{error}</b>}
-      <p>{items.length > 0 && JSON.stringify(items, null, 2)}</p>
+      {/* <p>{items.length > 0 && JSON.stringify(items, null, 2)}</p> */}
+      <ul>
+        {items.length > 0 &&
+          items.map((item) => (
+            <li key={item.id}>
+              {item.id} : {formatDate(item.createdAt)} {item.text}{" "}
+              {item.completed ? "(Completed)" : "(Not Completed)"}
+            </li>
+          ))}
+      </ul>
     </div>
   );
 };
